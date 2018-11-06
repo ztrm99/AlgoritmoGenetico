@@ -22,34 +22,34 @@ var values;
 var fitnessValues;
 var roulette;
 
-$(function() {
+$(function () {
   init();
   initData();
   points = data200;
-  $('#addRandom_btn').click(function() {
+  $('#addRandom_btn').click(function () {
     addRandomPoints(50);
     $('#status').text("");
     running = false;
   });
-  $('#start_btn').click(function() { 
-    if(points.length >= 3) {
+  $('#start_btn').click(function () {
+    if (points.length >= 3) {
       initData();
       GAInitialize();
       running = true;
     } else {
-      alert("add some more points to the map!");
+      alert("Agrega algunos puntos en el mapa!");
     }
   });
-  $('#clear_btn').click(function() {
+  $('#clear_btn').click(function () {
     running === false;
     initData();
     points = new Array();
   });
-  $('#stop_btn').click(function() {
-    if(running === false && currentGeneration !== 0){
-      if(best.length !== points.length) {
-          initData();
-          GAInitialize();
+  $('#stop_btn').click(function () {
+    if (running === false && currentGeneration !== 0) {
+      if (best.length !== points.length) {
+        initData();
+        GAInitialize();
       }
       running = true;
     } else {
@@ -65,8 +65,8 @@ function init() {
   init_mouse();
 }
 function init_mouse() {
-  $("canvas").click(function(evt) {
-    if(!running) {
+  $("canvas").click(function (evt) {
+    if (!running) {
       canvasMinX = $("#canvas").offset().left;
       canvasMinY = $("#canvas").offset().top;
       $('#status').text("");
@@ -82,7 +82,7 @@ function initData() {
   POPULATION_SIZE = 30;
   ELITE_RATE = 0.3;
   CROSSOVER_PROBABILITY = 0.9;
-  MUTATION_PROBABILITY  = 0.01;
+  MUTATION_PROBABILITY = 0.01;
   //OX_CROSSOVER_RATE = 0.05;
   UNCHANGED_GENS = 0;
   mutationTimes = 0;
@@ -99,14 +99,14 @@ function initData() {
 }
 function addRandomPoints(number) {
   running = false;
-  for(var i = 0; i<number; i++) {
+  for (var i = 0; i < number; i++) {
     points.push(randomPoint());
   }
 }
 function drawCircle(point) {
-  ctx.fillStyle   = '#000';
+  ctx.fillStyle = '#000';
   ctx.beginPath();
-  ctx.arc(point.x, point.y, 3, 0, Math.PI*2, true);
+  ctx.arc(point.x, point.y, 3, 0, Math.PI * 2, true);
   ctx.closePath();
   ctx.fill();
 }
@@ -116,8 +116,8 @@ function drawLines(array) {
   ctx.beginPath();
 
   ctx.moveTo(points[array[0]].x, points[array[0]].y);
-  for(var i=1; i<array.length; i++) {
-    ctx.lineTo( points[array[i]].x, points[array[i]].y )
+  for (var i = 1; i < array.length; i++) {
+    ctx.lineTo(points[array[i]].x, points[array[i]].y)
   }
   ctx.lineTo(points[array[0]].x, points[array[0]].y);
 
@@ -125,21 +125,21 @@ function drawLines(array) {
   ctx.closePath();
 }
 function draw() {
-  if(running) {
+  if (running) {
     GANextGeneration();
-    $('#status').text("There are " + points.length + " cities in the map, "
-                      +"the " + currentGeneration + "th generation with "
-                      + mutationTimes + " times of mutation. best value: "
-                      + ~~(bestValue));
+    $('#status').text("Existen " + points.length + " ciudades en el mapa, "
+      + "la " + currentGeneration + "º generación con "
+      + mutationTimes + " tiempos de mutación. Mejor valor encontrado: "
+      + ~~(bestValue));
   } else {
-    $('#status').text("There are " + points.length + " Cities in the map. ")
+    $('#status').text("Existen " + points.length + " Ciudades en el mapa. ")
   }
   clearCanvas();
   if (points.length > 0) {
-    for(var i=0; i<points.length; i++) {
+    for (var i = 0; i < points.length; i++) {
       drawCircle(points[i]);
     }
-    if(best.length === points.length) {
+    if (best.length === points.length) {
       drawLines(best);
     }
   }
